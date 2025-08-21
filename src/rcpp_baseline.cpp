@@ -1,11 +1,11 @@
-
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 #include <algorithm>
 using namespace std;
 using namespace Rcpp;
 
-
+// [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
+
 double rcpp_baseline(NumericVector y, double lambda, double ratio) {
   int N = y.size();
   
@@ -17,6 +17,13 @@ double rcpp_baseline(NumericVector y, double lambda, double ratio) {
     D(i, i + 2) = 1.0;
   }
   
-  print(D);
+  arma::mat D_arma(D.begin(), D.nrow(), D.ncol());
+  arma:: mat H = lambda * D_arma.t() * D_arma;
+  arma::vec w = arma::ones(N);
+  
+  Rcout << "H:\n" << H << "\n";
+  Rcout << "w:\n" << w << "\n";
+  
   return N;
 }
+

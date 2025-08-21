@@ -10,6 +10,9 @@ Description: One paragraph description of what the package does as one or more f
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: 
-    Rcpp
-LinkingTo: Rcpp
+    Rcpp,
+    RcppArmadillo
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
 RoxygenNote: 7.3.2
