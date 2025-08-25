@@ -7,9 +7,9 @@ library("Rcpp")
 #' @return num
 #' @export
 
-baseline <- function(x) {
+baseline <- function(x, lambda, ratio) {
 
-  ans <- rcpp_baseline(x, lambda = 2, ratio = 3)
+  ans <- rcpp_baseline(x, lambda, ratio)
 
   return(ans)
 }

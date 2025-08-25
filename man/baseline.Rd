@@ -4,7 +4,7 @@
 \alias{baseline}
 \title{baseline}
 \usage{
-baseline(x)
+baseline(x, lambda, ratio)
 }
 \arguments{
 \item{x}{}

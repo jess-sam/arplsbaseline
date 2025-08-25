@@ -12,15 +12,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // rcpp_baseline
-double rcpp_baseline(NumericVector y, double lambda, double ratio);
-RcppExport SEXP _arplsbaseline_rcpp_baseline(SEXP ySEXP, SEXP lambdaSEXP, SEXP ratioSEXP) {
+arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio);
+RcppExport SEXP _arplsbaseline_rcpp_baseline(SEXP y_vecSEXP, SEXP lambdaSEXP, SEXP ratioSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y_vec(y_vecSEXP);
     Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< double >::type ratio(ratioSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_baseline(y, lambda, ratio));
+    rcpp_result_gen = Rcpp::wrap(rcpp_baseline(y_vec, lambda, ratio));
     return rcpp_result_gen;
 END_RCPP
 }
