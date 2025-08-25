@@ -29,7 +29,13 @@ double rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
   arma::vec z = arma::solve(C, arma::solve(C.t(), (w % y)));
   
   arma::vec d = y-z;
+  arma::uvec ids = arma::find(d < 0); // Find indices
+  arma::vec d_minus = d.elem(ids);       // Assign value to condition
   
-  return N;
+  double m = arma::mean(d_minus);
+  double std = arma::stddev(d_minus);
+  
+  arma::mat wt = 1/ (1 + arma::exp(2 * (d-(2*std-m))/std));
+  return std;
 }
 
