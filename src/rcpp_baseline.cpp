@@ -46,5 +46,3 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
   }
   return w;
 }
-
-

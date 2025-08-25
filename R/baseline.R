@@ -7,10 +7,20 @@ library("Rcpp")
 #' @return num
 #' @export
 
-baseline <- function(x, lambda, ratio) {
+Spectrum <- function(baseline, raw_data) {
+  structure(
+    list(
+      baseline = baseline,
+      raw_data = raw_data
+    ),
+    class = "Spectrum"
+  )
+}
 
-  ans <- rcpp_baseline(x, lambda, ratio)
-
-  return(ans)
+baseline <- function(data, lambda, ratio) {
+  
+  baseline_data <- rcpp_baseline(data, lambda, ratio)
+  spec <- Spectrum(baseline_data, data)
+  return(spec)
 }
 
