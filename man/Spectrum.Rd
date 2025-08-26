@@ -4,7 +4,7 @@
 \alias{Spectrum}
 \title{baseline}
 \usage{
-Spectrum(baseline, raw_data)
+Spectrum(baseline, x, y, corrected)
 }
 \arguments{
 \item{x}{}
