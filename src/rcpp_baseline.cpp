@@ -21,6 +21,7 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
   arma::mat D_arma(D.begin(), D.nrow(), D.ncol());
   arma::mat H = lambda * D_arma.t() * D_arma;
   arma::vec w = arma::ones(N);
+  arma::vec z = w;
   
   while(true){
 
@@ -28,14 +29,19 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
     W.diag() = w;
     
     arma::mat C = arma::chol(W + H);
-    arma::vec z = arma::solve(C, arma::solve(C.t(), (w % y)));
-    
+    z = arma::solve(C, arma::solve(C.t(), (w % y)));
+
     arma::vec d = y-z;
     arma::uvec ids = arma::find(d < 0); // Find indices
     arma::vec d_minus = d.elem(ids);       // Assign value to condition
     
-    double m = arma::mean(d_minus);
-    double std = arma::stddev(d_minus);
+    double m = 0.0;
+    double std = 0.0;
+    
+    if (d_minus.size() > 0) {
+      m = arma::mean(d_minus);
+      std = arma::stddev(d_minus);
+    }
     
     arma::mat wt = 1/ (1 + arma::exp(2 * (d-(2*std-m))/std));
     
@@ -44,5 +50,5 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
     }
     w = wt;
   }
-  return w;
+  return z;
 }
