@@ -22,6 +22,11 @@ test_baseline <- function() {
     expect_error(baseline(data2), 
                  "Both columns of dataframe must be numeric")
   })
+  
+  test_that("The data must have enough elements",{
+    data3 <- data.frame(x = 1:9, y = 1:9)
+    expect_error(baseline(data3), 
+                 "There must be at least 10 non-NA elements in each column")})
 }
 
 test_baseline()
