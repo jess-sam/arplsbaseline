@@ -27,6 +27,16 @@ test_baseline <- function() {
     data3 <- data.frame(x = 1:9, y = 1:9)
     expect_error(baseline(data3), 
                  "There must be at least 10 non-NA elements in each column")})
+  
+  test_that("Lambda is a reasonable value", {
+    expect_error(baseline(data, lambda = 0.2), 
+                 "Lambda should not be less than 1")
+  })
+  
+  test_that("Ratio is a reasonable value", {
+    expect_error(baseline(data, ratio = 100), 
+                 "Ratio should not be greater than 1")
+  })
 }
 
 test_baseline()
