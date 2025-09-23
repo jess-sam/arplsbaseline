@@ -1,18 +1,26 @@
 Package: arplsbaseline
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: Baseline Correction using the ARPLS Method
 Version: 1.0
-Date: 2025-08-21
-Author: Your Name
-Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one or more full
-          sentences.
+Date: 2025-09-23
+Author: Jessica Sam
+Maintainer: Jessica Sam <jessica-sam@outlook.co.nz>
+Description: This package will calculate a baseline to data using  
+  Asymmetricallly Reweighted Penalised Least Squares Smoothing and correct data
+  according to this baseline. A Spectrum object is created after using the main 
+  baseline function and methods that can be called.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: 
     Rcpp,
-    RcppArmadillo
+    moments
 LinkingTo: 
     Rcpp,
     RcppArmadillo
 RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
