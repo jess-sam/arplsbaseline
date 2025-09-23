@@ -37,6 +37,11 @@ test_baseline <- function() {
     expect_error(baseline(data, ratio = 100), 
                  "Ratio should not be greater than 1")
   })
+  
+  test_that("The baseline function returns a Spectrum object", {
+    spec <- baseline(data) 
+    expect_s3_class(spec, "Spectrum")
+  })
 }
 
 test_baseline()
