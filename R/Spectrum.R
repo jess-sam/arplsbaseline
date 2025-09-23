@@ -1,4 +1,5 @@
 
+#' @importFrom stats sd
 Spectrum <- function(baseline, x, y, corrected) {
   structure(
     list(
@@ -11,6 +12,11 @@ Spectrum <- function(baseline, x, y, corrected) {
   )
 }
 
+#' @export
+print.Spectrum <- function(spectrum) {
+  cat("Type: Spectrum object \n")
+  cat("Number of signals recorded:", length(spectrum$corrected))
+}
 
 #' @export
 summary.Spectrum <- function(spectrum) {
@@ -21,6 +27,8 @@ summary.Spectrum <- function(spectrum) {
   cat("Maximum Signal", max(x), "\n")
   cat("Minimum Signal", min(x), "\n")
   cat("Range of Signals", range(x), "\n")
+  cat("Skewness:", round(moments::skewness(x),2), "\n")
+  cat("Kurtosis:", round(moments::kurtosis(x),2))
 }
 
 #' @export
