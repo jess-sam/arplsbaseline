@@ -1,0 +1,21 @@
+library(testthat)
+library(arplsbaseline)
+test_baseline <- function() {
+  
+  x <- c(1,2,3,NA,4,5,6,7,8,9,10,11,12,13,14,15)
+  y = c(2,64,NA,23,17,7,8,2,NA,9,43,14,8,14,18,7)
+  data <- data.frame(x,y)
+  
+  test_that("NA values have been removed", {
+    
+    spec <- baseline(data) 
+    
+    expect_false(any(is.na(spec$x)))
+    expect_false(any(is.na(spec$y)))
+    
+    expect_lt(length(spec$x), length(x))
+    expect_lt(length(spec$y), length(y))
+  })
+}
+
+test_baseline()
