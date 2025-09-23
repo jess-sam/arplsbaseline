@@ -1,0 +1,65 @@
+---
+title: "arplsbaseline_vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{baseline_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(arplsbaseline)
+```
+
+# Background
+
+It is often necessary to calculate a baseline for data, especially for spectral data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by excluding that baseline of data from the original spectrum.
+
+# Basic Baseline Function Call
+
+To obtain a spectrum using the baseline function, the functions x and y must be vectors of some sort:
+
+```{r}
+x <- 1:200
+y <- rchisq(200, df = 7)
+```
+
+# Using the Spectrum
+
+The output of the baseline function is a Spectrum object, which has four extractable data elements and two methods associated with the class.
+
+## Element Examples
+
+```{r}
+```
+
+Importantly, the baseline and corrected data vectors can be viewed:
+
+```{r}
+#print("Baseline")
+#head(spec$baseline)
+
+#print("Corrected Data")
+#head(spec$corrected)
+```
+
+## Method Examples
+
+The print method can be applied to the Spectrum object:
+
+```{r}
+#print(spec)
+```
+
+A summary method with statistics about the corrected data can also be applied to the Spectrum object:
+
+```{r}
+#summary(spec)
+```

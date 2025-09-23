@@ -1,5 +1,6 @@
 
 #' @importFrom stats sd
+#' @importFrom graphics lines
 Spectrum <- function(baseline, x, y, corrected) {
   structure(
     list(
