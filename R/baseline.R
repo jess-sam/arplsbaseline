@@ -27,7 +27,7 @@ baseline <- function(data, lambda = 1e4, ratio = 1e-4) {
   y <- y[valid]
   
   if(length(x) < 10 | length(y) < 10) {
-    stop("There must be at least 10 non-NA eleements in each x and y vector")
+    stop("There must be at least 10 non-NA elements in each column")
   }
   
   if(!missing(lambda) & lambda < 1) {
