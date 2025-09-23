@@ -16,6 +16,12 @@ test_baseline <- function() {
     expect_lt(length(spec$x), length(x))
     expect_lt(length(spec$y), length(y))
   })
+  
+  test_that("The data should be numeric", {
+    data2 <- data.frame(x = c("test",1:10), y = 1:11)
+    expect_error(baseline(data2), 
+                 "Both columns of dataframe must be numeric")
+  })
 }
 
 test_baseline()
