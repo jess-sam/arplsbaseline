@@ -24,9 +24,9 @@ summary.Spectrum <- function(spectrum) {
   cat("---------Summary of Corrected Spectrum----------\n")
   cat("Mean: ", round(mean(x),2), "\n")
   cat("Standard Deviation:", round(sd(x),2),"\n")
-  cat("Maximum Signal", max(x), "\n")
-  cat("Minimum Signal", min(x), "\n")
-  cat("Range of Signals", range(x), "\n")
+  cat("Maximum Signal", round(max(x), 2), "\n")
+  cat("Minimum Signal", round(min(x), 2), "\n")
+  cat("Range of Signals", round(max(x) - min(x), 2), "\n")
   cat("Skewness:", round(moments::skewness(x),2), "\n")
   cat("Kurtosis:", round(moments::kurtosis(x),2))
 }
