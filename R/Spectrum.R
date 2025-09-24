@@ -14,6 +14,12 @@ Spectrum <- function(baseline, x, y, corrected) {
 }
 
 #' @export
+as.data.frame.Spectrum <- function(spectrum) {
+  return(data.frame(spectrum$baseline, 
+                    spectrum$x, spectrum$y, spectrum$corrected))
+}
+
+#' @export
 print.Spectrum <- function(spectrum) {
   cat("Type: Spectrum object \n")
   cat("Number of signals recorded:", length(spectrum$corrected))
@@ -34,7 +40,12 @@ summary.Spectrum <- function(spectrum) {
 
 #' @export
 plot.Spectrum <- function(spectrum) {
-  plot(spectrum$x, spectrum$y, type = "l", xlab = "Signal Intensity", ylab = "Wavenumber")
-  lines(spectrum$x, spectrum$corrected, col = "red")
-  lines(spectrum$x, spectrum$baseline, col = "blue")
+  ylim <- range(c(spectrum$y, spectrum$corrected, spectrum$baseline))
+  plot(spectrum$x, spectrum$y, type = "l", ylab = "Signal Intensity", 
+       xlab = "Wavenumber", ylim = ylim)
+  lines(spectrum$x, spectrum$corrected, col = "red", ylim = ylim)
+  lines(spectrum$x, spectrum$baseline, col = "blue", ylim = ylim)
+  legend("topright",
+         legend=c("data", "corrected data", "baseline"), 
+         fill = c("black","red", "blue"))
 }
