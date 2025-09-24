@@ -34,7 +34,7 @@ summary.Spectrum <- function(spectrum) {
 
 #' @export
 plot.Spectrum <- function(spectrum) {
-  plot(spectrum$x, spectrum$y, type = "l")
+  plot(spectrum$x, spectrum$y, type = "l", xlab = "Signal Intensity", ylab = "Wavenumber")
   lines(spectrum$x, spectrum$corrected, col = "red")
   lines(spectrum$x, spectrum$baseline, col = "blue")
 }
