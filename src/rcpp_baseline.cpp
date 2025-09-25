@@ -6,7 +6,11 @@ using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::export]]
 
-arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
+arma::vec rcpp_baseline(const NumericVector &y_vec, 
+                        const double &lambda, const double &ratio) {
+  
+  auto start = chrono::high_resolution_clock::now();
+  
   int N = y_vec.size();
   arma::vec y = as<arma::vec>(y_vec);
   
@@ -22,6 +26,8 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
   arma::mat H = lambda * D_arma.t() * D_arma;
   arma::vec w = arma::ones(N);
   arma::vec z = w;
+  
+  int iters = 1;
   
   while(true){
 
@@ -49,6 +55,12 @@ arma::vec rcpp_baseline(NumericVector y_vec, double lambda, double ratio) {
       break;
     }
     w = wt;
+    iters++;
   }
+  auto end = chrono::high_resolution_clock::now();
+  std::chrono::duration<double> time = end - start;
+  
+  Rcout << "Baseline Computation Time (seconds) = " << time.count() << "\n";
+  Rprintf("Iterations = %d\n", iters);
   return z;
 }

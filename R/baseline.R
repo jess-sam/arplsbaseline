@@ -10,6 +10,7 @@
 #' @export 
 
 baseline <- function(data, lambda = 1e4, ratio = 1e-4) {
+  
   x <- data[[1]]
   y <- data[[2]]
   
