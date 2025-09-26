@@ -4,7 +4,7 @@
 \alias{baseline}
 \title{baseline}
 \usage{
-baseline(data, lambda = 10000, ratio = 1e-04)
+baseline(data, lambda = 10000, ratio = 1e-04, start_mask = 0, end_mask = 0)
 }
 \arguments{
 \item{data}{Dataframe of frequencies/wavenumbers with signal intensity}
@@ -12,6 +12,10 @@ baseline(data, lambda = 10000, ratio = 1e-04)
 \item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4}
 
 \item{ratio}{Value to control stopping condition, default is 1e-4}
+
+\item{start_mask}{Lower limit of wavenumbers to ignore in baseline algorithm}
+
+\item{end_mask}{Upper limit of wavenumbers to ignore in baseline algorithm}
 }
 \value{
 Spectrum Object of custom Spectrum class
