@@ -8,8 +8,9 @@ Maintainer: Jessica Sam <jessica-sam@outlook.co.nz>
 Description: This package will calculate a baseline to data using  
   Asymmetrically Reweighted Penalised Least Squares Smoothing and correct data
   according to this baseline. A Spectrum object is created after using the main 
-  baseline function and methods that can be called.
-License: GPL (>= 2)
+  baseline function and various methods which plot or summarise the data can be
+  called on this object.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
     Rcpp,

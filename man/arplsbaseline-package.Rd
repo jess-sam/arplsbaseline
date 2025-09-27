@@ -3,32 +3,25 @@
 \alias{arplsbaseline}
 \docType{package}
 \title{
-  A short title line describing what the package does
+  \packageTitle{arplsbaseline}
 }
 \description{
-  A more detailed description of what the package does. A length
-  of about one to five lines is recommended.
+  \packageDescription{arplsbaseline}
 }
 \details{
   This section should provide a more detailed overview of how to use the
   package, including the most important functions.
 }
-\author{
-Your Name, email optional.
+\author{ \packageAuthor{arplsbaseline}
 
-Maintainer: Your Name <your@email.com>
+Maintainer: \packageMaintainer{arplsbaseline}
 }
 \references{
-  This optional section can contain literature or other references for
-  background information.
+  Baek, S.-J., Park, A., Ahn, Y.-J., & Choo, J. (2015).
+  Baseline correction using asymmetrically reweighted penalized least squares smoothing.
+  The Analyst, 140(1), 250–257. \href{https://doi.org/10.1039/c4an01061b}{Royal Society of Chemistry}
 }
 \keyword{ package }
-\seealso{
-  Optional links to other man pages
-}
-\examples{
-  \dontrun{
-     ## Optional simple examples of the most important functions
-     ## These can be in \dontrun{} and \donttest{} blocks.   
-  }
-}
+
+\section{The \file{DESCRIPTION} File}{\packageDESCRIPTION{arplsbaseline}}
+\section{Documentation Index}{\packageIndices{arplsbaseline}}
