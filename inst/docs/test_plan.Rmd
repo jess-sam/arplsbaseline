@@ -5,3 +5,17 @@ output:
   pdf_document: default
 ---
 
+Note: if only wanting to run the developer unit tests, then the following commands can be used, with the assumption that the package `testthat` is installed in to the user's R packages.
+
+```r
+testthat::test_dir(system.file("tests", package = "arplsbaseline"), reporter = "summary")
+```
+# Full Testing Instructions
+
+This test plan should cover all different cases that need to be tested.
+The baseline function is the most important function that requires testing. This requires testing:
+
+1. Input Validation
+
+
+# Input Validation

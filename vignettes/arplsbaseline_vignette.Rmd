@@ -20,46 +20,124 @@ library(arplsbaseline)
 
 # Background
 
-It is often necessary to calculate a baseline for data, especially for spectral data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by excluding that baseline of data from the original spectrum.
+It is often necessary to calculate a baseline for data, especially for spectroscopic data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by excluding that baseline of data from the original spectrum. This baseline correction uses the Asymmetricly Reweighted Penalised Least Squares Smoothing (ARPLS) method and further information about how this method works can be found in the Theory Vignette.
 
 # Basic Baseline Function Call
 
-To obtain a spectrum using the baseline function, the functions x and y must be vectors of some sort:
+To obtain a spectrum using the baseline function, the baseline function must use a dataframe, with two columns of data.
+
+The package contains some sample data with three different spectra (ham, redwine, strawberry). The data can be viewed calling one of these three names:
 
 ```{r}
-x <- 1:200
-y <- rchisq(200, df = 7)
+# strawberry
+
+# here only the top of the dataframe is shown to save space
+head(strawberry)
 ```
+
+and loaded into the environment by:
+
+```{r}
+data(strawberry)
+```
+
+Creating a spectrum with default parameter values can be done by the baseline function taking the dataframe as a sole argument.
+
+```{r}
+spec <- baseline(strawberry)
+```
+
+Running the function allows the user to also see how long it took the results to converge, in seconds, and in terms of many iterations of the algorithm was needed.
 
 # Using the Spectrum
 
-The output of the baseline function is a Spectrum object, which has four extractable data elements and two methods associated with the class.
+Now that a spectrum `spec` is obtained, we can extract its elements and call functions on it.
+
+An overloaded print method can be applied to the Spectrum object which tells the user what type of object it is, how many signals were in the spectrum as well as what elements can be extracted.
+
+```{r}
+print(spec)
+```
+
+Another option is to just use the built-in method from R utils to view the structure of the object.
+
+```{r}
+str(spec)
+```
 
 ## Element Examples
 
+It can be shown that `spec` is in fact of `Spectrum` class, and that there are four extractable elements, all with same length that are associated with the object.
+
+The original data points can be extracted:
+
 ```{r}
+print("Wavenumbers")
+head(spec$x)
+
+print("Signal Intensity")
+head(spec$y)
 ```
 
-Importantly, the baseline and corrected data vectors can be viewed:
+Importantly, the baseline and corrected data vectors can be extracted:
 
 ```{r}
-#print("Baseline")
-#head(spec$baseline)
+print("Baseline")
+head(spec$baseline)
 
-#print("Corrected Data")
-#head(spec$corrected)
+print("Corrected Data")
+head(spec$corrected)
 ```
 
 ## Method Examples
 
-The print method can be applied to the Spectrum object:
+Asides from the print method, a summary method with basic statistics about the corrected data can also be applied to the object:
 
 ```{r}
-#print(spec)
+summary(spec)
 ```
 
-A summary method with statistics about the corrected data can also be applied to the Spectrum object:
+To visualise the spectra obtained, a plot method can be called which will show the original data, the calculated baseline and the newly corrected data.
 
 ```{r}
-#summary(spec)
+plot(spec)
 ```
+
+A coercion method to a dataframe is also available so that instead of extracting vectors from the spectrum, all the data is available in one place.
+
+```{r}
+head(as.data.frame(spec))
+```
+
+# Modifying Baseline Parameter
+
+Obtaining a spectrum is relatively easy, but the spectrum may not look like how we want it to - there can be too much noise left in the spectrum, or a baseline has been fitted too closely. This is where the lambda parameter comes in.
+
+We can change lambda to be bigger or smaller to our liking, as long as lambda is not less than 0. The default lambda is currently 10000.
+
+## Decreasing Lambda
+
+```{r}
+spec2 <- baseline(strawberry, lambda = 1) 
+```
+
+```{r}
+summary(spec2)
+plot(spec2)
+```
+
+Decreasing lambda shows that the baseline follows the original data much closer, which squashes more of the corrected peaks.
+
+The ratio parameter controls how much precision is wanted when comparing baselines to each other in order to determine when to stop the algorithm. Smaller ratios may result in less accurate predictions, but will be faster in cases where we are using datasets with lots of samples, and will mean that the algorithm definitely converges.
+
+## Increasing Lambda
+
+```{r}
+spec3 <- baseline(strawberry, lambda = 1e8) 
+plot(spec3)
+
+```
+
+Here increasing lambda shows that now the baseline is just a straight line instead, and has become much more generalised.
+
+The choice of lambda is a difficult choice but ultimately is up to the user.
