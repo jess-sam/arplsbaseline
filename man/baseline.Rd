@@ -4,18 +4,16 @@
 \alias{baseline}
 \title{baseline}
 \usage{
-baseline(data, lambda = 10000, ratio = 1e-04)
+baseline(data, lambda = 10000)
 }
 \arguments{
 \item{data}{Dataframe of frequencies/wavenumbers with signal intensity}
 
 \item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4}
-
-\item{ratio}{Value to control stopping condition, default is 1e-4}
 }
 \value{
 Spectrum Object of custom Spectrum class
 }
 \description{
-Calculate baseline using the arpls method by sourcing an Rcpp function
+Calculate baseline using the ARPLS method by sourcing an Rcpp function
 }

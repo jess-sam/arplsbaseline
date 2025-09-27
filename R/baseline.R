@@ -1,16 +1,16 @@
 
 #' baseline
 #'
-#' Calculate baseline using the arpls method by sourcing an Rcpp function
+#' Calculate baseline using the ARPLS method by sourcing an Rcpp function
 #'
 #' @param data Dataframe of frequencies/wavenumbers with signal intensity
 #' @param lambda Regularisation term to control the smoothness of the baseline, default is 1e4
-#' @param ratio Value to control stopping condition, default is 1e-4
 #' @return Spectrum Object of custom Spectrum class
 #' @export 
 
-baseline <- function(data, lambda = 1e4, ratio = 1e-4) {
+baseline <- function(data, lambda = 1e4) {
   
+  # @param ratio Value to control stopping condition, default is 1e-4
   x <- data[[1]]
   y <- data[[2]]
   
@@ -35,12 +35,17 @@ baseline <- function(data, lambda = 1e4, ratio = 1e-4) {
     stop("Lambda should not be less than 1")
   }
   
-  if(!missing(ratio) & ratio > 1) {
-    stop("Ratio should not be greater than 1")
+  if(!missing(lambda) & lambda > 1e10) {
+    stop("Lambda should be a smaller value")
   }
   
-  baseline_data <- rcpp_baseline(y, lambda, ratio)
+#  if(!missing(ratio) & ratio > 1) {
+#    stop("Ratio should not be greater than 1")
+#  }
+  
+  baseline_data <- rcpp_baseline(y, lambda, 1e-4) # ratio
   corrected <- y - baseline_data
-  spec <- Spectrum(baseline_data, x, y, corrected)
+  # vectors for consistency
+  spec <- Spectrum(as.vector(baseline_data), x, y, as.vector(corrected))
   return(spec)
 }
