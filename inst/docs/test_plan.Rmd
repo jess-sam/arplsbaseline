@@ -1,6 +1,7 @@
 ---
 title: "arplsbaseline Package Test Plan"
-output: html_document
-author: Jessica Sam
+author: "Jessica Sam"
+output:
+  pdf_document: default
 ---
 
