@@ -19,8 +19,7 @@ Maintainer: \packageMaintainer{arplsbaseline}
 \references{
   Baek, S.-J., Park, A., Ahn, Y.-J., & Choo, J. (2015).
   Baseline correction using asymmetrically reweighted penalized least squares smoothing.
-  The Analyst, 140(1), 250–257. \href{https://doi.org/10.1039/c4an01061b}{Royal Society of Chemistry}
-}
+  The Analyst, 140(1), 250-257.}
 \keyword{ package }
 
 \section{The \file{DESCRIPTION} File}{\packageDESCRIPTION{arplsbaseline}}
