@@ -6,6 +6,12 @@
 #' @param data Dataframe of wavenumbers with signal intensity
 #' @param lambda Regularisation term to control the smoothness of the baseline, default is 1e4
 #' @return Spectrum Object of custom Spectrum class
+#' @examples
+#' # example code
+#' # create spectrum from built-in dataset
+#' baseline(ham, lambda = 1e6)
+#' # can leave out lambda to use default
+#' baseline(strawberry)
 #' @export 
 
 baseline <- function(data, lambda = 1e4) {

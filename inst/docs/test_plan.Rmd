@@ -21,7 +21,7 @@ To run all the unit tests at the same time with the assumption that the package 
 testthat::test_package("arplsbaseline", "tap")
 ```
 
-The results of this command should show 20 comments about all the expectations which have passed, and for what reason.
+The results of this command should show 25 comments about all the expectations which have passed, and for what reason. An explanation of these tests are below.
 
 # Components Tested
 

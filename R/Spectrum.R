@@ -16,6 +16,18 @@ Spectrum <- function(baseline, x, y, corrected) {
   )
 }
 
+#' @title Coerce Spectrum object to data.frame
+#' @name as.data.frame.Spectrum
+#' @description Converts a Spectrum object into a data.frame.
+#' @param x A Spectrum object.
+#' @param row.names Not used. Included for consistency with \code{\link[base]{as.data.frame}}.
+#' @param optional Not used. Included for consistency with \code{\link[base]{as.data.frame}}.
+#' @param ... Not used. Included for consistency with \code{\link[base]{as.data.frame}}.
+#' @return A data.frame with spectrum data.
+#' @examples
+#' # example code to convert to dataframe
+#' spec <- baseline(strawberry)
+#' as.data.frame(spec)
 #' @export
 as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
   return(data.frame(baseline = x$baseline, 
@@ -23,6 +35,15 @@ as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
                     corrected = x$corrected))
 }
 
+#' @title Print Spectrum
+#' @name print.Spectrum
+#' @description Prints information about Spectrum object structure
+#' @param x A Spectrum object.
+#' @param ... Not used. Included for consistency with \code{\link[base]{print}}.
+#' @examples
+#' # example code to print
+#' spec <- baseline(strawberry)
+#' print(spec)
 #' @export
 print.Spectrum <- function(x, ...) {
   cat("------------------------Printing!------------------------\n")
@@ -32,6 +53,17 @@ print.Spectrum <- function(x, ...) {
   cat("---------------------------------------------------------\n")
 }
 
+#' @title Spectrum Summary Statistics
+#' @name summary.Spectrum
+#' @description Prints summary statistics about the corrected spectrum. This calculates mean,
+#'  median, standard deviation, minimum, maximum, signal range and skewness. The maximum also tells
+#'  you at what wavenumber this occurs at.
+#' @param object A Spectrum object.
+#' @param ... Not used. Included for consistency with \code{\link[base]{summary}}.
+#' @examples
+#' # example code
+#' spec <- baseline(strawberry)
+#' summary(spec)
 #' @export
 summary.Spectrum <- function(object, ...) {
   x <- object$corrected
@@ -48,6 +80,16 @@ summary.Spectrum <- function(object, ...) {
   cat("------------------------------------------------\n")
 }
 
+#' @title Spectra Visualisation
+#' @name plot.Spectrum
+#' @description Plots the baseline, original data and corrected spectrum all in one plot using ggplot2.
+#' @param x A Spectrum object.
+#' @param y Not used. Included for consistency with \code{\link[graphics]{plot}}.
+#' @param ... Not used. Included for consistency with \code{\link[graphics]{plot}}.
+#' @examples
+#' # example code
+#' spec <- baseline(strawberry)
+#' plot(spec)
 #' @export
 plot.Spectrum <- function(x, y = NULL, ...) {
   df <- as.data.frame.Spectrum(x)

@@ -6,7 +6,11 @@
 
 The goal of arplsbaseline is to provide a package which can be used with spectroscopic data, 
 as to implement an algorithm from a scientific paper to calculate a baseline to these 
-specific data and correct it.
+specific data and correct it. This ARPLS method is commonly used with FTIR obtained spectra, 
+which map the signal intensity of each particular wavenumber. 
+
+Note: throughout the package, I use the term wavenumber quite interchangeably with the variable x, as well as 
+the term signal, or signal intensity, interchangeably with the variable y. 
 
 ## Installation
 
@@ -53,3 +57,12 @@ testthat::test_package("arplsbaseline", "tap")
 Full specifications of what is being tested and how, are given in the test plan 
 which can be accessed through a pdf document, found through this link to be used within Github: 
 [Test Plan](inst/docs/test_plan.pdf).
+
+## Usage
+
+There is a vignette that can be called, which gives examples on how to use the package.
+To access this, the following command can be called:
+
+````r
+browseVignettes(package = "arplsbaseline")
+```

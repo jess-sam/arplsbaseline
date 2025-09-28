@@ -17,3 +17,10 @@ Spectrum Object of custom Spectrum class
 \description{
 Calculate baseline using the ARPLS method by sourcing an Rcpp function
 }
+\examples{
+# example code
+# create spectrum from built-in dataset
+baseline(ham, lambda = 1e6)
+# can leave out lambda to use default
+baseline(strawberry)
+}
