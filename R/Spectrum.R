@@ -1,8 +1,9 @@
-#' @importFrom stats sd
+#' @importFrom stats sd quantile
 #' @importFrom graphics lines
 #' @importFrom reshape2 melt
 #' @importFrom rlang .data
 
+#' @keywords internal
 Spectrum <- function(baseline, x, y, corrected) {
   structure(
     list(
@@ -24,21 +25,27 @@ as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
 
 #' @export
 print.Spectrum <- function(x, ...) {
+  cat("------------------------Printing!------------------------\n")
   cat("Type: Spectrum object \n")
-  cat("Number of signals recorded:", length(x$corrected))
-  cat("\nElements to extract include: baseline, x, y, corrected \n")
+  cat("Number of signals recorded:", length(x$corrected), "\n")
+  cat("Elements to extract include: baseline, x, y, corrected \n")
+  cat("---------------------------------------------------------\n")
 }
 
 #' @export
 summary.Spectrum <- function(object, ...) {
   x <- object$corrected
+  index <- which(x == max(x))
+  
   cat("---------Summary of Corrected Spectrum----------\n")
-  cat("Mean: ", round(mean(x),4), "\n")
+  cat("Mean:", round(mean(x),4), "\n")
   cat("Standard Deviation:", round(sd(x),4),"\n")
-  cat("Maximum Signal:", round(max(x), 4), "\n")
-  cat("Minimum Signal:", round(min(x), 4), "\n")
-  cat("Range of Signals:", round(max(x) - min(x), 4), "\n")
+  cat("Median:", round(quantile(x, 0.5), 4), "\n")
+  cat("Maximum:", round(max(x), 4), "\n", "at Wavenumber:", object$x[index], "\n")
+  cat("Minimum:", round(min(x), 4), "\n")
+  cat("Signal Range:", round(max(x) - min(x), 4), "\n")
   cat("Skewness:", round(moments::skewness(x),4), "\n")
+  cat("------------------------------------------------\n")
 }
 
 #' @export
