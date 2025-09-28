@@ -63,6 +63,6 @@ which can be accessed through a pdf document, found through this link to be used
 There is a vignette that can be called, which gives examples on how to use the package.
 To access this, the following command can be called:
 
-````r
+```r
 browseVignettes(package = "arplsbaseline")
 ```
