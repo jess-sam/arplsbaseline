@@ -28,7 +28,7 @@ arma::vec rcpp_baseline(const NumericVector &y_vec,
   
   int iters = 1;
   
-  while(iters < 150){
+  while(iters < 200){
     
     arma::mat W(N, N, arma::fill::zeros);
     W.diag() = w;
@@ -64,9 +64,8 @@ arma::vec rcpp_baseline(const NumericVector &y_vec,
   Rcout << "Baseline Computation Time (seconds) = " << time.count() << "\n";
   Rprintf("Iterations = %d\n", iters);
   
-  if(iters == 150){
+  if(iters == 200){
     Rprintf("Max iterations of the algorithm reached.\n");
-    
   }
   
   return z;
