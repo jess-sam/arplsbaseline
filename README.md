@@ -36,9 +36,8 @@ If this GitHub installation does not work, downloading the .zip file from the Gi
 give the same result, and requires you to set the system environment again. In general Windows is a bit of 
 a pain about this but if everything is set up nicely on your machine, then it should work.
 
-I also cannot guarantee 100% the GitHub installation will work with Linux or Mac users, since I don't have one,
-but it does seem to be commonly known that it is mostly just Windows which does struggle with the installation of 
-R packages that require BLAS/LAPACK.
+I am fairly certain that it is mostly just Windows which does struggle with the installation of 
+R packages that require BLAS/LAPACK because Windows does not have a compiler. 
 
 ## Testing
 
