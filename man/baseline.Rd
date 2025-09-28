@@ -7,7 +7,7 @@
 baseline(data, lambda = 10000)
 }
 \arguments{
-\item{data}{Dataframe of frequencies/wavenumbers with signal intensity}
+\item{data}{Dataframe of wavenumbers with signal intensity}
 
 \item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4}
 }
