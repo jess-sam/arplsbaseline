@@ -29,8 +29,8 @@ remotes::install_github("jess-sam/arplsbaseline",
 ### IMPORTANT NOTE FOR WINDOWS USERS!
 
 This package requires BLAS/LAPACK because it requires RcppArmadillo for linear algebra computations
-and if R is not correctly pointing to these, then installation will definitely fail. This may require 
-setting the environment using 
+and if R is not correctly pointing to these, then installation will definitely fail. If the above command fails, 
+this may require setting the environment using 
 Sys.setenv(PKG_LIBS = "directory path where R’s DLLs are installed and find Rblas and Rlapack"). 
 
 In my machine I use: Sys.setenv(PKG_LIBS = "-LC:/PROGRA ~ 1/R/R-45 ~ 1.1/bin/x64 -lRblas -lRlapack") but
@@ -57,6 +57,9 @@ testthat::test_package("arplsbaseline", "tap")
 Full specifications of what is being tested and how, are given in the test plan 
 which can be accessed through a pdf document, found through this link to be used within Github: 
 [Test Plan](inst/docs/test_plan.pdf).
+
+Checking working functionality of the package can be done by following step-by-step, the examples 
+given in the vignette and making sure this gives the same output.
 
 ## Usage
 
