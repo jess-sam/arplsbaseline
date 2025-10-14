@@ -4,13 +4,13 @@
 #' @importFrom rlang .data
 
 #' @keywords internal
-Spectrum <- function(baseline, x, y, corrected) {
+Spectrum <- function(baseline, wavenumber, original_signal, corrected_signal) {
   structure(
     list(
       baseline = baseline,
-      x = x,
-      y = y,
-      corrected = corrected
+      wavenumber = wavenumber,
+      original_signal = original_signal,
+      corrected_signal = corrected_signal
     ),
     class = "Spectrum"
   )
@@ -31,8 +31,8 @@ Spectrum <- function(baseline, x, y, corrected) {
 #' @export
 as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
   return(data.frame(baseline = x$baseline, 
-                    X = x$x, original = x$y, 
-                    corrected = x$corrected))
+                    wavenumber = x$wavenumber, original_signal = x$original_signal, 
+                    corrected_signal = x$corrected_signal))
 }
 
 #' @title Print Spectrum
@@ -48,8 +48,8 @@ as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
 print.Spectrum <- function(x, ...) {
   cat("------------------------Printing!------------------------\n")
   cat("Type: Spectrum object \n")
-  cat("Number of signals recorded:", length(x$corrected), "\n")
-  cat("Elements to extract include: baseline, x, y, corrected \n")
+  cat("Number of signals recorded:", length(x$corrected_signal), "\n")
+  cat("Elements to extract include: \n baseline, wavenumber, original_signal, corrected_signal \n")
   cat("---------------------------------------------------------\n")
 }
 
@@ -66,14 +66,14 @@ print.Spectrum <- function(x, ...) {
 #' summary(spec)
 #' @export
 summary.Spectrum <- function(object, ...) {
-  x <- object$corrected
+  x <- object$corrected_signal
   index <- which(x == max(x))
   
   cat("---------Summary of Corrected Spectrum----------\n")
   cat("Mean:", round(mean(x),4), "\n")
   cat("Standard Deviation:", round(sd(x),4),"\n")
   cat("Median:", round(quantile(x, 0.5), 4), "\n")
-  cat("Maximum:", round(max(x), 4), "\n", "at Wavenumber:", object$x[index], "\n")
+  cat("Maximum:", round(max(x), 4), "\n", "at Wavenumber:", object$wavenumber[index], "\n")
   cat("Minimum:", round(min(x), 4), "\n")
   cat("Signal Range:", round(max(x) - min(x), 4), "\n")
   cat("Skewness:", round(moments::skewness(x),4), "\n")
@@ -93,15 +93,17 @@ summary.Spectrum <- function(object, ...) {
 #' @export
 plot.Spectrum <- function(x, y = NULL, ...) {
   df <- as.data.frame.Spectrum(x)
-  df_long <- melt(data = df, id.vars = "X", value.name = "Signal", 
+  df_long <- melt(data = df, id.vars = "wavenumber", value.name = "original_signal", 
                   variable.name = "Data")
   
-  plot_spec <- ggplot2::ggplot(df_long, ggplot2::aes(x = .data$X, 
-                                                     y = .data$Signal, 
+  plot_spec <- ggplot2::ggplot(df_long, ggplot2::aes(x = .data$wavenumber, 
+                                                     y = .data$original_signal, 
                                                      color = .data$Data)) + 
-    ggplot2::labs(x = "Wavenumber (1/cm)", title = "Spectra Visualisation") +
+    ggplot2::labs(x = "Wavenumber (1/cm)", y = "Signal Intensity", 
+                  title = "Spectra Visualisation") +
     ggplot2::geom_line(linewidth = 0.8) +
     ggplot2::theme_bw() +
-    ggplot2::scale_color_manual(values=c("turquoise3", "grey30", "darkmagenta"))
+    ggplot2::scale_color_manual(values=c("turquoise3", "grey30", "darkmagenta")) +
+    ggplot2::scale_x_reverse()
   plot_spec
 }
