@@ -73,10 +73,10 @@ The original data points can be extracted:
 
 ```{r}
 print("Wavenumbers")
-head(spec$x)
+head(spec$wavenumber)
 
 print("Signal Intensity")
-head(spec$y)
+head(spec$original_signal)
 ```
 
 Importantly, the baseline and corrected data vectors can be extracted:
@@ -86,7 +86,7 @@ print("Baseline")
 head(spec$baseline)
 
 print("Corrected Data")
-head(spec$corrected)
+head(spec$corrected_signal)
 ```
 
 ## Method Examples
