@@ -49,7 +49,7 @@ baseline <- function(data, lambda = 1e4) {
   }
   
   if(length(unique(x)) < length(x)){
-    stop("Samples need more unique wavenumbers")
+    stop("Wavenumbers must not contain duplicates")
   }
   
   # removing NA 
@@ -59,6 +59,10 @@ baseline <- function(data, lambda = 1e4) {
   valid <- !(is.na(x) | is.na(y))
   x <- x[valid]
   y <- y[valid]
+  
+  if (all(y == 0)) {
+    stop("Signal intensity values cannot be all 0")
+  }
   
   if (length(x) < 10 | length(y) < 10) {
     stop("There must be at least 10 non-NA elements in each column")
@@ -70,10 +74,6 @@ baseline <- function(data, lambda = 1e4) {
       stop("Aborted by user")
     }
     message("Computation in process! Please wait patiently! :D")
-  }
-  
-  if (all(y == 0)) {
-    stop("Signal Intensity values cannot be all 0")
   }
   
   baseline_data <- tryCatch(
