@@ -69,7 +69,7 @@ baseline <- function(data, lambda = 1e4) {
   }
   
   if (all(y == 0)) {
-    stop("Data cannot be all 0")
+    stop("Signal Intensity values cannot be all 0")
   }
   
   baseline_data <- tryCatch(

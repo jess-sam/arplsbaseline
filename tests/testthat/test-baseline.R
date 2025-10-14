@@ -53,8 +53,8 @@ test_that("Empty baseline function throws an error", {
 })
 
 test_that("Function throws an error if signals are all 0", {
-  data5 <- data.frame(x = 1:11, y = rep(0,11))
-  expect_error(baseline(data5), "Data cannot be all 0")
+  data5 <- data.frame(x = 1:15, y = rep(0,15))
+  expect_error(baseline(data5), "Signal Intensity values cannot be all 0")
 })
 
 test_that("Function throws an error if there are not enough wavenumbers", {
