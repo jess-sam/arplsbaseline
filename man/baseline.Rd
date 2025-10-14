@@ -4,12 +4,16 @@
 \alias{baseline}
 \title{baseline}
 \usage{
-baseline(data, lambda = 10000)
+baseline(data, lambda = 10000, start_mask = 0, end_mask = 0)
 }
 \arguments{
 \item{data}{Dataframe of wavenumbers with corresponding signal intensity, first column must contain wavenumbers and second column signal intensity.}
 
 \item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4, common values to use are in powers of 10, from 1e2 to 1e8. Larger values give smoother baselines.}
+
+\item{start_mask}{Lower limit of wavenumbers to ignore in baseline algorithm}
+
+\item{end_mask}{Upper limit of wavenumbers to ignore in baseline algorithm}
 }
 \value{
 Spectrum Object of custom Spectrum class
