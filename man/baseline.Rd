@@ -7,9 +7,9 @@
 baseline(data, lambda = 10000)
 }
 \arguments{
-\item{data}{Dataframe of wavenumbers with signal intensity}
+\item{data}{Dataframe of wavenumbers with corresponding signal intensity, first column must contain wavenumbers and second column signal intensity.}
 
-\item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4}
+\item{lambda}{Regularisation term to control the smoothness of the baseline, default is 1e4, common values to use are in powers of 10, from 1e2 to 1e8. Larger values give smoother baselines.}
 }
 \value{
 Spectrum Object of custom Spectrum class
