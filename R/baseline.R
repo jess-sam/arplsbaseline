@@ -21,7 +21,11 @@ baseline <- function(data, lambda = 1e4) {
   }
   
   if (!is.data.frame(data)){
-    stop("Data must be in the form of a dataframe")
+    stop("Data must be in the form of a dataframe with 2 columns")
+  }
+  
+  if(ncol(data) != 2) {
+    stop("Dataframe must only have 2 columns")
   }
   
   if (!missing(lambda)) {

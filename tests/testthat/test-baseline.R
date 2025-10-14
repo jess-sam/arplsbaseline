@@ -12,6 +12,11 @@ test_that("Incorrect data format throws an error", {
   expect_error(baseline(2), "Data must be in the form of a dataframe")
 })
 
+test_that("Dataframe has appropriate number of columns", {
+  expect_error(baseline(cbind(strawberry, rep(1, nrow(strawberry)))), 
+               "Dataframe must only have 2 columns")
+})
+
 test_that("NA values have been removed", {
   
   spec <- baseline(data) 
