@@ -17,7 +17,9 @@ Imports:
     moments,
     ggplot2,
     reshape2,
-    rlang
+    rlang,
+    gridExtra,
+    mgcv
 LinkingTo: 
     Rcpp,
     RcppArmadillo

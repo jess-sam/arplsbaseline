@@ -18,6 +18,6 @@ Computes a GAM model to fit the computed baseline, providing summary and both vi
 }
 \examples{
 # example code
-spec <- baseline(ham)
+spec <- baseline(strawberry)
 baseline_gam(spec)
 }

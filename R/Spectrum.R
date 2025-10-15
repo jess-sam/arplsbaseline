@@ -1,4 +1,4 @@
-#' @importFrom stats sd quantile
+#' @importFrom stats sd quantile predict
 #' @importFrom graphics lines
 #' @importFrom reshape2 melt
 #' @importFrom rlang .data
@@ -110,9 +110,18 @@ plot.Spectrum <- function(x, y = NULL, ...) {
   plot_spec
 }
 
-
+#' @title Compute a GAM model to fit the computed baseline
+#' @name baseline_gam
+#' @description Computes a GAM model to fit the computed baseline, providing summary and both visualisations of fit and residuals.
+#' @param spectrum Spectrum object
+#' @param full_summary Boolean to specify whether the entire GAM model summary should be printed, default is FALSE
+#' @param return_gam Boolean to specify whether to return the fitted GAM model, default is FALSE.
+#' @examples 
+#' # example code
+#' spec <- baseline(strawberry)
+#' baseline_gam(spec)
 #' @export
-baseline_stats <- function(spectrum, full_summary = FALSE, return_gam = FALSE) {
+baseline_gam <- function(spectrum, full_summary = FALSE, return_gam = FALSE) {
   
   df <- as.data.frame(spectrum)
   
