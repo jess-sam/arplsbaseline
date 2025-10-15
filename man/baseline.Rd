@@ -27,4 +27,6 @@ Calculate baseline using the ARPLS method by sourcing an Rcpp function
 baseline(ham, lambda = 1e6)
 # can leave out lambda to use default
 baseline(strawberry)
+# masking example
+baseline(redwine, start_mask = 1400, end_mask = 1500)
 }

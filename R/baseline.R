@@ -14,6 +14,8 @@
 #' baseline(ham, lambda = 1e6)
 #' # can leave out lambda to use default
 #' baseline(strawberry)
+#' # masking example
+#' baseline(redwine, start_mask = 1400, end_mask = 1500)
 #' @export 
 
 baseline <- function(data, lambda = 1e4, start_mask = 0, end_mask = 0) {
