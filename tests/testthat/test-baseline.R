@@ -7,9 +7,9 @@ data <- data.frame(x,y)
 strawberry <- arplsbaseline::strawberry
 
 test_that("Incorrect data format throws an error", {
-  expect_error(baseline(NA), "Data must be in the form of a dataframe")
-  expect_error(baseline(c(2,3), "Data must be in the form of a dataframe"))
-  expect_error(baseline(2), "Data must be in the form of a dataframe")
+  expect_error(baseline(NA), "Data must be in the form of a dataframe with 2 columns")
+  expect_error(baseline(c(2,3), "Data must be in the form of a dataframe with 2 columns"))
+  expect_error(baseline(2), "Data must be in the form of a dataframe with 2 columns")
 })
 
 test_that("Dataframe has appropriate number of columns", {
@@ -40,14 +40,64 @@ test_that("The function throws an error if the data does not have enough element
 test_that("Lambda incorrectly entered, gives a message is given that the default value is used", {
   expect_message(
     baseline(strawberry, c(1,2)),
-    regexp = "Lambda must be a single numeric value"
+    "Lambda must be a single numeric value between 1 and 1e10, default lambda of 1e4 will now be used"
   )
   
   expect_message(
     baseline(strawberry, NA),
-    regexp = "Lambda must be a single numeric value"
+    "Lambda must be a single numeric value between 1 and 1e10, default lambda of 1e4 will now be used"
   )
 })
+
+################################
+#####Masking Functionality######
+################################
+
+
+test_that("Function gives a message for incorrect masking arguments", {
+  expect_message(
+    baseline(strawberry, start_mask = "", end_mask = 1500),
+    "At least one of the masking limits is not numeric, no masking will be used."
+  )
+  
+  expect_message(
+    baseline(strawberry, start_mask = 1500, end_mask = ""),
+    "At least one of the masking limits is not numeric, no masking will be used."
+  )
+
+  expect_message(
+    baseline(strawberry, start_mask = 2, end_mask = 1500),
+    "At least one of the masking limits is out of the range of the presented wavenumbers, no masking will be used."
+  )
+  
+  expect_message(
+    baseline(strawberry, start_mask = 1500, end_mask = 2),
+    "Starting wavenumber to mask should not be larger than the end wavenumber, no masking will be used."
+  )
+  
+  expect_message(
+    baseline(strawberry, end_mask = 1500), 
+    "One of the start or end limits for masking is missing, no masking will be used."
+  )
+  
+  expect_message(
+    baseline(strawberry, start_mask = 1500), 
+    "One of the start or end limits for masking is missing, no masking will be used."
+  )
+})
+
+test_that("Function returns an error if not enough non-masked entries", {
+  expect_error(
+    baseline(data.frame(1:10, 1:10), start_mask = 1, end_mask = 10), 
+    "There must be at least 10 non-masked entries"
+  )
+  
+  expect_error(
+    baseline(data.frame(c(1:18,NA), rnorm(19)), start_mask = 1, end_mask = 10), 
+    "There must be at least 10 non-masked entries"
+  )
+})
+
 
 ##################
 ###Edge Cases#####
@@ -65,4 +115,8 @@ test_that("Function throws an error if signals are all 0", {
 test_that("Function throws an error if wavenumbers are not unique", {
   data5 <- data.frame(x = rep(0,20), y = 1:20)
   expect_error(baseline(data5), "Wavenumbers must not contain duplicates")
+})
+
+test_that("Function returns an error for Rcpp if dataset gets past input checks but still fails", {
+  expect_error(baseline(data.frame(c(1:20, NA), 1:21)), "Rcpp failed")
 })

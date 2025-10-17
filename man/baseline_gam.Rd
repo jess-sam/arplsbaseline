@@ -20,4 +20,6 @@ Computes a GAM model to fit the computed baseline, providing summary and both vi
 # example code
 spec <- baseline(strawberry)
 baseline_gam(spec)
+# with TRUE arguments
+baseline_gam(spec, full_summary = TRUE, return_gam = TRUE)
 }

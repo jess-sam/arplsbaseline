@@ -121,7 +121,7 @@ baseline <- function(data, lambda = 1e4, start_mask = 0, end_mask = 0) {
     rcpp_baseline(alg_y, lambda, 1e-4)
   },
   error = function(e) {
-    stop("Rcpp failed :( try again with another dataset: ", conditionMessage(e))
+    stop("Rcpp failed :( try again with another dataset")
   }
 )
   if (mask) {

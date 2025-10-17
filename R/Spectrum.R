@@ -120,36 +120,42 @@ plot.Spectrum <- function(x, y = NULL, ...) {
 #' # example code
 #' spec <- baseline(strawberry)
 #' baseline_gam(spec)
+#' # with TRUE arguments
+#' baseline_gam(spec, full_summary = TRUE, return_gam = TRUE)
 #' @export
 baseline_gam <- function(spectrum, full_summary = FALSE, return_gam = FALSE) {
   
   df <- as.data.frame(spectrum)
   
-  fit.gam <- gam(df$baseline ~ s(df$wavenumber), method = "REML")
-  fit.summ <- summary(fit.gam)
-  fit.summ$s.pv
+  fit_gam <- gam(df$baseline ~ s(df$wavenumber), method = "REML")
+  fit_summ <- summary(fit_gam)
+  fit_summ$s.pv
   cat("------------------------------------------------\n")
   cat("---------------GAM Fitting Summary--------------\n")
   cat("------------------------------------------------\n")
-  cat("Expected Degrees of Freedom: ", round(fit.summ$edf,4), "\n")
+  cat("Expected Degrees of Freedom: ", round(fit_summ$edf,4), "\n")
   cat("(EDF equivalent to number of basis functions) \n")
   cat("\n")
-  cat("Adjusted R^2: ", round(fit.summ$r.sq,4), "\n")
-  cat("Deviance Explained : ", round(fit.summ$dev.expl,4), "\n")
-  cat("Smooth Term Significance p-value: ", round(fit.summ$s.pv,4), "\n")
+  cat("Adjusted R^2: ", round(fit_summ$r.sq,4), "\n")
+  cat("Deviance Explained : ", round(fit_summ$dev.expl,4), "\n")
+  cat("Smooth Term Significance p-value: ", round(fit_summ$s.pv,4), "\n")
   cat("------------------------------------------------\n")
   
-  if (full_summary) {
-    print(fit.summ)
+  if (!is.logical(full_summary) | is.na(full_summary)) {
+    stop("full_summary and return_gam arguments can only be TRUE or FALSE")
   }
   
-  pred <- predict(fit.gam)
+  if (full_summary) {
+    print(fit_summ)
+  }
+  
+  pred <- predict(fit_gam)
   new_df <- data.frame(wavenumber = df$wavenumber, pred = pred)
   
-  resid_df <- data.frame(Index = 1:length(pred), Residuals = fit.gam$residuals)
+  resid_df <- data.frame(Index = 1:length(pred), Residuals = fit_gam$residuals)
   
   model_plot <- ggplot2::ggplot() +
-    ggplot2::geom_line(data = new_df, ggplot2::aes(x = .data$wavenumber, y = .data$pred, color = "Fitted GAM Baseline"), size = 1) +
+    ggplot2::geom_line(data = new_df, ggplot2::aes(x = .data$wavenumber, y = .data$pred, color = "Fitted GAM Baseline"), linewidth = 1) +
     ggplot2::geom_point(data = df, ggplot2::aes(x = .data$wavenumber, y = .data$baseline, color = "Original Baseline"), size = 0.5 , shape = 4) +
     ggplot2::labs(x = "Wavenumber (1/cm)", y = "Signal Intensity",
                   title = "Visualisation of Baseline GAM Fitting") +
@@ -167,7 +173,11 @@ baseline_gam <- function(spectrum, full_summary = FALSE, return_gam = FALSE) {
   
   grid.arrange(model_plot, residual_plot, nrow = 2) 
   
+  if (!is.logical(return_gam) | is.na(return_gam)) {
+    stop("full_summary and return_gam arguments can only be TRUE or FALSE")
+  }
+  
   if (return_gam) {
-    return (fit.gam)
+    return (fit_gam)
   }
 }
