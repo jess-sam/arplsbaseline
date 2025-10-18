@@ -10,6 +10,10 @@ Description: This package will calculate a baseline to data using
   according to this baseline. A Spectrum object is created after using the main 
   baseline function and various methods which plot or summarise the data can be
   called on this object.
+References: 
+  Baek, Sung-June, Aaron Park, Young-Jin Ahn, and Jaebum Choo. 2015. 
+  “Baseline Correction Using Asymmetrically Reweighted Penalized Least Squares Smoothing.” 
+  The Analyst 140 (1): 250–57. https://doi.org/10.1039/c4an01061b.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
