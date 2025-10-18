@@ -2,7 +2,7 @@ Package: arplsbaseline
 Type: Package
 Title: Baseline Correction using the ARPLS Method
 Version: 1.0
-Date: 2025-09-27
+Date: 2025-10-22
 Author: Jessica Sam
 Maintainer: Jessica Sam <jessica-sam@outlook.co.nz>
 Description: This package will calculate a baseline to data using  
