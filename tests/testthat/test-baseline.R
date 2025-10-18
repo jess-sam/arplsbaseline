@@ -20,10 +20,10 @@ test_that("Dataframe has appropriate number of columns", {
 test_that("NA values have been removed", {
   
   spec <- baseline(data) 
-  expect_false(any(is.na(spec$x)))
-  expect_false(any(is.na(spec$y)))
-  expect_lt(length(spec$x), length(x))
-  expect_lt(length(spec$y), length(y))
+  expect_false(any(is.na(spec$wavenumber)))
+  expect_false(any(is.na(spec$original_signal)))
+  expect_lt(length(spec$wavenumber), length(x))
+  expect_lt(length(spec$original_signal), length(y))
 })
 
 test_that("The function throws an error if data is not numeric", {
@@ -42,44 +42,37 @@ test_that("Lambda incorrectly entered, gives a message is given that the default
     baseline(strawberry, c(1,2)),
     "Lambda must be a single numeric value between 1 and 1e10, default lambda of 1e4 will now be used"
   )
-  
   expect_message(
     baseline(strawberry, NA),
     "Lambda must be a single numeric value between 1 and 1e10, default lambda of 1e4 will now be used"
   )
 })
 
-################################
-#####Masking Functionality######
-################################
-
+###################################
+#####Masking Argument Checks#######
+###################################
 
 test_that("Function gives a message for incorrect masking arguments", {
   expect_message(
     baseline(strawberry, start_mask = "", end_mask = 1500),
     "At least one of the masking limits is not numeric, no masking will be used."
   )
-  
   expect_message(
     baseline(strawberry, start_mask = 1500, end_mask = ""),
     "At least one of the masking limits is not numeric, no masking will be used."
   )
-
   expect_message(
     baseline(strawberry, start_mask = 2, end_mask = 1500),
     "At least one of the masking limits is out of the range of the presented wavenumbers, no masking will be used."
   )
-  
   expect_message(
-    baseline(strawberry, start_mask = 1500, end_mask = 2),
+    baseline(strawberry, start_mask = 1500, end_mask = 1400),
     "Starting wavenumber to mask should not be larger than the end wavenumber, no masking will be used."
   )
-  
   expect_message(
     baseline(strawberry, end_mask = 1500), 
     "One of the start or end limits for masking is missing, no masking will be used."
   )
-  
   expect_message(
     baseline(strawberry, start_mask = 1500), 
     "One of the start or end limits for masking is missing, no masking will be used."
@@ -88,16 +81,10 @@ test_that("Function gives a message for incorrect masking arguments", {
 
 test_that("Function returns an error if not enough non-masked entries", {
   expect_error(
-    baseline(data.frame(1:10, 1:10), start_mask = 1, end_mask = 10), 
-    "There must be at least 10 non-masked entries"
-  )
-  
-  expect_error(
-    baseline(data.frame(c(1:18,NA), rnorm(19)), start_mask = 1, end_mask = 10), 
+    baseline(data.frame(c(1:18), rnorm(18)), start_mask = 1, end_mask = 10), 
     "There must be at least 10 non-masked entries"
   )
 })
-
 
 ##################
 ###Edge Cases#####

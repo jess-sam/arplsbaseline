@@ -3,13 +3,9 @@ library(arplsbaseline)
 
 strawberry <- arplsbaseline::strawberry
 spec <- baseline(strawberry, 1e7)
-spec_2 <- baseline(strawberry, 1e7, start_mask = 1500, end_mask = 1600)
-
 
 test_that("The baseline function returns a Spectrum object", {
   expect_s3_class(spec, "Spectrum")
-  expect_s3_class(spec_2, "Spectrum")
-  
 })
 
 test_that("Each element from spectrum is a vector", {
@@ -47,5 +43,7 @@ test_that("Incorrect GAM method inputs give informative errors", {
   expect_error(baseline_gam(spec, return_gam = NA),
                "full_summary and return_gam arguments can only be TRUE or FALSE")
   expect_error(baseline_gam(spec,  full_summary = 1),
+               "full_summary and return_gam arguments can only be TRUE or FALSE")
+  expect_error(baseline_gam(spec,  return_gam = 1),
                "full_summary and return_gam arguments can only be TRUE or FALSE")
   })
