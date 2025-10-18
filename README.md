@@ -4,7 +4,7 @@
 
 <!-- badges: end -->
 
-The aim for arplsbaseline is to provide a package which can be used with spectral data, as to implement an algorithm from a scientific paper to calculate a baseline to these specific data and correct it. This baseline correction method which uses asymmetrically reweighted penalised least squares, Baek et al. (2015) is commonly used with FTIR obtained spectra, which map the signal intensity of each particular wav
+The aim for arplsbaseline is to provide a package which can be used with spectral data, as to implement an algorithm from a scientific paper to calculate a baseline to these specific data and correct it. This baseline correction method which uses asymmetrically reweighted penalised least squares, Baek et al. (2015) is commonly used with FTIR obtained spectra, which map the signal intensity of each particular wavenumber.
 
 ## Installation
 
