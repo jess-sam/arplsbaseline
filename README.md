@@ -14,7 +14,7 @@ You can install the arplsbaseline package built with tests and vignettes from [G
 # install.packages("remotes")
 # if not already installed
 
-remotes::install_github("jess-sam/arplsbaseline/tree/final_version", 
+remotes::install_github("jess-sam/arplsbaseline@final_version", 
                         build_vignettes = TRUE, 
                         INSTALL_opts = c("--install-tests"))
 ```
