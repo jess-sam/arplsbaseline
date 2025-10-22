@@ -1,6 +1,6 @@
 Package: arplsbaseline
 Type: Package
-Title: Baseline Correction using the ARPLS Method
+Title: Baseline Correction using the arPLS Method
 Version: 1.0
 Date: 2025-10-22
 Author: Jessica Sam

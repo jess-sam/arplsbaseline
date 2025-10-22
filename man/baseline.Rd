@@ -19,7 +19,7 @@ baseline(data, lambda = 10000, start_mask = 0, end_mask = 0)
 Spectrum Object of custom Spectrum class
 }
 \description{
-Calculate baseline using the ARPLS method by sourcing an Rcpp function
+Calculate baseline using the arPLS method by sourcing an Rcpp function
 }
 \examples{
 # example code

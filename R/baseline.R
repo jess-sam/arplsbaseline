@@ -1,7 +1,7 @@
 
 #' baseline
 #'
-#' Calculate baseline using the ARPLS method by sourcing an Rcpp function
+#' Calculate baseline using the arPLS method by sourcing an Rcpp function
 #'
 #' @param data Dataframe of wavenumbers with corresponding signal intensity, first column must contain wavenumbers and second column signal intensity.
 #' @param lambda Regularisation term to control the smoothness of the baseline, default is 1e4, common values to use are in powers of 10, from 1e2 to 1e8. Larger values give smoother baselines.

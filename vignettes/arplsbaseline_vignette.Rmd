@@ -25,7 +25,7 @@ library(arplsbaseline)
 
 # Background
 
-It is often necessary to calculate a baseline especially for spectroscopic data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by subtracting that baseline of data from the original spectrum intensities. This baseline correction uses the Asymmetrically Reweighted Penalised Least Squares Smoothing (ARPLS) method @baek2015 and further information about how this method works can be found in the Theory Vignette.
+It is often necessary to calculate a baseline especially for spectroscopic data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by subtracting that baseline of data from the original spectrum intensities. This baseline correction uses the Asymmetrically Reweighted Penalised Least Squares Smoothing (arPLS) method @baek2015.
 
 # Basic Baseline Function Call
 

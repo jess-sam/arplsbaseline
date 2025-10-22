@@ -21,7 +21,7 @@ The package also contains sample spectra datasets, vignettes, as well as corresp
 
 These tests check that everything is present and do function as how it is expected. These are manual checks for the most important functionality for the users, whereas the unit tests, check everything automatically.
 
-1.  Vignettes
+1.  Vignette
 
 Calling the following:
 
@@ -29,7 +29,7 @@ Calling the following:
 browseVignettes(package = "arplsbaseline")
 ```
 
-should correctly display links to the vignettes for the package, and can be opened as html pages.
+should correctly display links to the vignette for the package, and can be opened as an html page.
 
 2.  Package Datasets
 
