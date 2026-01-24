@@ -2,15 +2,20 @@
 title: "arplsbaseline_vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{baseline_vignette}
+  %\VignetteIndexEntry{arplsbaseline_vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: ../inst/references.bib
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  out.width = "80%",
+  fig.align = "center"
 )
 ```
 
@@ -20,7 +25,7 @@ library(arplsbaseline)
 
 # Background
 
-It is often necessary to calculate a baseline for data, especially for spectroscopic data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by excluding that baseline of data from the original spectrum. This baseline correction uses the Asymmetrically Reweighted Penalised Least Squares Smoothing (ARPLS) method and further information about how this method works can be found in the Theory Vignette (which needs to be added)
+It is often necessary to calculate a baseline especially for spectroscopic data, where a baseline can model the excessive noise in the spectrum. Noise-corrected data can be obtained by subtracting that baseline of data from the original spectrum intensities. This baseline correction uses the Asymmetrically Reweighted Penalised Least Squares Smoothing (arPLS) method @baek2015.
 
 # Basic Baseline Function Call
 
@@ -51,7 +56,7 @@ Running the function allows the user to also see how long it took the results to
 
 # Using the Spectrum
 
-Now that a spectrum `spec` is obtained, we can extract its elements and call functions on it.
+Now that a spectrum is obtained, we can extract its elements and call functions on it.
 
 An overloaded print method can be applied to the Spectrum object which tells the user what type of object it is, how many signals were in the spectrum as well as what elements can be extracted.
 
@@ -67,16 +72,16 @@ str(spec)
 
 ## Element Examples
 
-It can be shown that `spec` is in fact of `Spectrum` class, and that there are four extractable elements, all with same length that are associated with the object.
+It can be shown that what the baseline function returns is in fact of `Spectrum` class, and that there are four extractable elements, all with same length that are associated with the object.
 
 The original data points can be extracted:
 
 ```{r}
 print("Wavenumbers")
-head(spec$x)
+head(spec$wavenumber)
 
 print("Signal Intensity")
-head(spec$y)
+head(spec$original_signal)
 ```
 
 Importantly, the baseline and corrected data vectors can be extracted:
@@ -86,7 +91,7 @@ print("Baseline")
 head(spec$baseline)
 
 print("Corrected Data")
-head(spec$corrected)
+head(spec$corrected_signal)
 ```
 
 ## Method Examples
@@ -108,6 +113,21 @@ A coercion method to a dataframe is also available so that instead of extracting
 ```{r}
 head(as.data.frame(spec))
 ```
+
+A slightly more complicated method for the Spectrum object is a method that fits a model to the predicted baseline.
+
+```{r}
+# if not wanting the full summary, and the model returned
+#baseline_gam(spec)
+
+baseline_model <- baseline_gam(spec, full_summary = TRUE, return_gam = TRUE)
+```
+
+What is shown first, is a basic summary of the GAM (Generalised Additive Model) which is fit to the baseline. If the full_summary argument is set to TRUE, the full detailed summary output is printed as well to the console. There is an additional return_gam argument, which if set to TRUE, then the function will return the fitted GAM model.
+
+GAMs are generalised linear models in which the linear response (signal intensity) depends on smooth functions of the predictors (wavenumbers). These are very flexible models, so estimating the form of the baseline equation using one of these models, rather than a high degree polynomial was preferred.
+
+Visualisations of the fitted GAM with the original baseline, as well as the residuals from the GAM model are also presented by calling this function.
 
 # Modifying Baseline Parameter
 
@@ -141,3 +161,18 @@ plot(spec3)
 Here increasing lambda shows that now the baseline is just a straight line instead, and has become much more generalised.
 
 The choice of lambda is a difficult choice but ultimately is up to the user.
+
+# Masking Functionality
+
+Asides from changing lambda, the user also has the option to set a mask for a range of wavelengths, so that the ARPLS algorithm will ignore these, in computation.
+
+If I wanted to mask the wavelengths from $1500 - 1800 \ cm^{-1}$:
+
+```{r}
+spec4 <- baseline(strawberry, start_mask = 1500, end_mask = 1800)
+plot(spec4)
+```
+
+As a result, the baseline for these wavelengths have been calculated as 0, and the corrected signal has remained unchanged from the original. This has overall created a higher baseline for the rest of the spectrum, and values are much more corrected, than without the masking. Masking functionality may be good in situations where a specific section of the spectrum is known, where it is not very useful to use these values to compute a baseline.
+
+# References

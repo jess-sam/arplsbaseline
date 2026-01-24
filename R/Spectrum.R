@@ -1,16 +1,18 @@
-#' @importFrom stats sd quantile
+#' @importFrom stats sd quantile predict
 #' @importFrom graphics lines
 #' @importFrom reshape2 melt
 #' @importFrom rlang .data
+#' @importFrom mgcv gam
+#' @importFrom gridExtra grid.arrange
 
 #' @keywords internal
-Spectrum <- function(baseline, x, y, corrected) {
+Spectrum <- function(baseline, wavenumber, original_signal, corrected_signal) {
   structure(
     list(
       baseline = baseline,
-      x = x,
-      y = y,
-      corrected = corrected
+      wavenumber = wavenumber,
+      original_signal = original_signal,
+      corrected_signal = corrected_signal
     ),
     class = "Spectrum"
   )
@@ -31,8 +33,8 @@ Spectrum <- function(baseline, x, y, corrected) {
 #' @export
 as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
   return(data.frame(baseline = x$baseline, 
-                    X = x$x, original = x$y, 
-                    corrected = x$corrected))
+                    wavenumber = x$wavenumber, original_signal = x$original_signal, 
+                    corrected_signal = x$corrected_signal))
 }
 
 #' @title Print Spectrum
@@ -48,8 +50,8 @@ as.data.frame.Spectrum <- function(x, row.names = NULL, optional = FALSE, ...) {
 print.Spectrum <- function(x, ...) {
   cat("------------------------Printing!------------------------\n")
   cat("Type: Spectrum object \n")
-  cat("Number of signals recorded:", length(x$corrected), "\n")
-  cat("Elements to extract include: baseline, x, y, corrected \n")
+  cat("Number of signals recorded:", length(x$corrected_signal), "\n")
+  cat("Elements to extract include: \n baseline, wavenumber, original_signal, corrected_signal \n")
   cat("---------------------------------------------------------\n")
 }
 
@@ -66,14 +68,14 @@ print.Spectrum <- function(x, ...) {
 #' summary(spec)
 #' @export
 summary.Spectrum <- function(object, ...) {
-  x <- object$corrected
+  x <- object$corrected_signal
   index <- which(x == max(x))
   
   cat("---------Summary of Corrected Spectrum----------\n")
   cat("Mean:", round(mean(x),4), "\n")
   cat("Standard Deviation:", round(sd(x),4),"\n")
   cat("Median:", round(quantile(x, 0.5), 4), "\n")
-  cat("Maximum:", round(max(x), 4), "\n", "at Wavenumber:", object$x[index], "\n")
+  cat("Maximum:", round(max(x), 4), "\n", "at Wavenumber:", object$wavenumber[index], "\n")
   cat("Minimum:", round(min(x), 4), "\n")
   cat("Signal Range:", round(max(x) - min(x), 4), "\n")
   cat("Skewness:", round(moments::skewness(x),4), "\n")
@@ -93,15 +95,89 @@ summary.Spectrum <- function(object, ...) {
 #' @export
 plot.Spectrum <- function(x, y = NULL, ...) {
   df <- as.data.frame.Spectrum(x)
-  df_long <- melt(data = df, id.vars = "X", value.name = "Signal", 
+  df_long <- melt(data = df, id.vars = "wavenumber", value.name = "original_signal", 
                   variable.name = "Data")
   
-  plot_spec <- ggplot2::ggplot(df_long, ggplot2::aes(x = .data$X, 
-                                                     y = .data$Signal, 
+  plot_spec <- ggplot2::ggplot(df_long, ggplot2::aes(x = .data$wavenumber, 
+                                                     y = .data$original_signal, 
                                                      color = .data$Data)) + 
-    ggplot2::labs(x = "Wavenumber (1/cm)", title = "Spectra Visualisation") +
+    ggplot2::labs(x = "Wavenumber (1/cm)", y = "Signal Intensity", 
+                  title = "Spectra Visualisation") +
     ggplot2::geom_line(linewidth = 0.8) +
     ggplot2::theme_bw() +
-    ggplot2::scale_color_manual(values=c("turquoise3", "grey30", "darkmagenta"))
+    ggplot2::scale_color_manual(values=c("turquoise3", "grey30", "darkmagenta")) +
+    ggplot2::scale_x_reverse()
   plot_spec
+}
+
+#' @title Compute a GAM model to fit the computed baseline
+#' @name baseline_gam
+#' @description Computes a GAM model to fit the computed baseline, providing summary and both visualisations of fit and residuals.
+#' @param spectrum Spectrum object
+#' @param full_summary Boolean to specify whether the entire GAM model summary should be printed, default is FALSE
+#' @param return_gam Boolean to specify whether to return the fitted GAM model, default is FALSE.
+#' @examples 
+#' # example code
+#' spec <- baseline(strawberry)
+#' baseline_gam(spec)
+#' # with TRUE arguments
+#' baseline_gam(spec, full_summary = TRUE, return_gam = TRUE)
+#' @export
+baseline_gam <- function(spectrum, full_summary = FALSE, return_gam = FALSE) {
+  
+  df <- as.data.frame(spectrum)
+  
+  fit_gam <- gam(df$baseline ~ s(df$wavenumber), method = "REML")
+  fit_summ <- summary(fit_gam)
+  fit_summ$s.pv
+  cat("------------------------------------------------\n")
+  cat("---------------GAM Fitting Summary--------------\n")
+  cat("------------------------------------------------\n")
+  cat("Expected Degrees of Freedom: ", round(fit_summ$edf,4), "\n")
+  cat("(EDF equivalent to number of basis functions) \n")
+  cat("\n")
+  cat("Adjusted R^2: ", round(fit_summ$r.sq,4), "\n")
+  cat("Deviance Explained : ", round(fit_summ$dev.expl,4), "\n")
+  cat("Smooth Term Significance p-value: ", round(fit_summ$s.pv,4), "\n")
+  cat("------------------------------------------------\n")
+  
+  if (!is.logical(full_summary) | is.na(full_summary)) {
+    stop("full_summary and return_gam arguments can only be TRUE or FALSE")
+  }
+  
+  if (full_summary) {
+    print(fit_summ)
+  }
+  
+  pred <- predict(fit_gam)
+  new_df <- data.frame(wavenumber = df$wavenumber, pred = pred)
+  
+  resid_df <- data.frame(Index = 1:length(pred), Residuals = fit_gam$residuals)
+  
+  model_plot <- ggplot2::ggplot() +
+    ggplot2::geom_line(data = new_df, ggplot2::aes(x = .data$wavenumber, y = .data$pred, color = "Fitted GAM Baseline"), linewidth = 1) +
+    ggplot2::geom_point(data = df, ggplot2::aes(x = .data$wavenumber, y = .data$baseline, color = "Original Baseline"), size = 0.5 , shape = 4) +
+    ggplot2::labs(x = "Wavenumber (1/cm)", y = "Signal Intensity",
+                  title = "Visualisation of Baseline GAM Fitting") +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_manual(
+      name = "Legend", 
+      values = c("Original Baseline" = "blue", "Fitted GAM Baseline" = "red")) +
+    ggplot2::scale_x_reverse()
+  
+  residual_plot <- ggplot2::ggplot() +
+    ggplot2::geom_point(data = resid_df, ggplot2::aes(x = .data$Index, y = .data$Residuals)) +
+    ggplot2::labs(title = "Visualisation of GAM Residuals") +
+    ggplot2::theme_bw() +
+    ggplot2::scale_x_reverse()
+  
+  grid.arrange(model_plot, residual_plot, nrow = 2) 
+  
+  if (!is.logical(return_gam) | is.na(return_gam)) {
+    stop("full_summary and return_gam arguments can only be TRUE or FALSE")
+  }
+  
+  if (return_gam) {
+    return (fit_gam)
+  }
 }
